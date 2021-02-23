@@ -3,14 +3,15 @@ package com.tactfactory.tp2tdd;
 import java.util.ArrayList;
 
 import com.tactfactory.tp2tdd.fusee.Fusee;
+import com.tactfactory.tp2tdd.fusee.Planete;
 
 public class Base {
 
 	private String nom;
 	private ArrayList<Fusee> fusees;
-	private String planete;
+	private Planete planete;
 	
-	public Base(String nom, ArrayList<Fusee> fusees, String planete) {
+	public Base(String nom, ArrayList<Fusee> fusees, Planete planete) {
 		super();
 		this.nom = nom;
 		this.fusees = fusees;
@@ -33,11 +34,11 @@ public class Base {
 		this.fusees = fusees;
 	}
 
-	public String getPlanete() {
+	public Planete getPlanete() {
 		return planete;
 	}
 
-	public void setPlanete(String planete) {
+	public void setPlanete(Planete planete) {
 		this.planete = planete;
 	}
 }
