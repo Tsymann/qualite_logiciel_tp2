@@ -1,0 +1,105 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building a CLI application.
+    id 'application'
+
+    id 'eclipse'
+
+    id 'jacoco'
+
+    id 'checkstyle'
+
+    id "com.github.spotbugs" version "3.0.0"
+
+    id 'pmd'
+
+    id 'de.aaschmid.cpd' version '3.1'
+}
+
+group = 'com.tactfactory.tp2tdd'
+version = '0.1.0'
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'com.tactfactory.tp2tdd.Application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
+task checkstyleMain (type: Checkstyle, overwrite: true) {
+    ignoreFailures = true
+    showViolations = false
+}
+
+task checkstyleTest (type: Checkstyle, overwrite: true){
+    ignoreFailures = true
+    showViolations = false
+}
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  ignoreFailures = true
+}
+
+task pmdMain(type: Pmd, overwrite: true) {
+  ignoreFailures = true
+}
+
+task pmdTest(type: Pmd, overwrite: true) {
+  ignoreFailures = true
+}
+
+cpdCheck {
+  reports {
+    text.enabled = true
+    xml.enabled = true
+  }
+  source = sourceSets.main.allJava
+  minimumTokenCount = 50
+}
+
+// Test cases.
+test {
+    ignoreFailures = false
+    useJUnitPlatform()
+    reports {
+      junitXml.enabled = false
+      html.enabled = true
+    }
+}
+
+// Build number.
+def buildNumber = ""
+if (project.file("build.properties").exists()) {
+    def props = new Properties()
+
+    props.load(new FileInputStream(project.file("build.properties")))
+    buildNumber = ".${props.buildNumber}"
+} else {
+    buildNumber = ".0"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.tactfactory.tp2tdd.Application'
+        )
+    }
+}
